@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 jest.mock("next/navigation", () => {
     const router = {
         push: jest.fn(),
-        query: {},
     };
     return {
         useRouter: jest.fn().mockReturnValue(router),

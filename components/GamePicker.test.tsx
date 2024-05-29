@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 jest.mock("next/navigation", () => {
     const router = {
         push: jest.fn(),
-        query: {},
     };
     return {
         useRouter: jest.fn().mockReturnValue(router),
@@ -67,7 +66,7 @@ describe("GamePicker", () => {
 
         expect(useRouter().push).toHaveBeenCalledTimes(1);
         expect(useRouter().push).toHaveBeenCalledWith("/555");
-  
+
         const error = screen.queryByText("Error fetching rounds data.");
         expect(error).not.toBeInTheDocument();
     });
@@ -85,7 +84,7 @@ describe("GamePicker", () => {
 
         await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
         await waitFor(() => expect(global.fetch).toHaveBeenCalledWith("/555"));
-      
+
         const error = screen.getByText("Error fetching rounds data.");
         expect(error).toBeInTheDocument();
     });

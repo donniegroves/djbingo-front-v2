@@ -1,5 +1,5 @@
 import RoundPicker from "@/components/RoundPicker";
 
-export default function roundPickerPage() {
+export default function RoundPickerPage() {
     return <RoundPicker rounds={[]} />;
 }
