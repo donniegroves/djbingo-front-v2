@@ -20,7 +20,7 @@ export default function GamePicker() {
             context?.setGameId(parseInt(gameIdInputValue));
             context?.setRounds(gameRoundsData);
         } catch {
-            setError("Error fetching round data.");
+            setError("Error fetching rounds data.");
             return;
         }
 

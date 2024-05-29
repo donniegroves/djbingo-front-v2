@@ -31,7 +31,7 @@ describe("GamePicker", () => {
         const button = screen.getByRole("button", { name: "Get Started" });
         expect(button).toBeInTheDocument();
 
-        const error = screen.queryByText("Error fetching round data.");
+        const error = screen.queryByText("Error fetching rounds data.");
         expect(error).not.toBeInTheDocument();
     });
 
@@ -67,8 +67,8 @@ describe("GamePicker", () => {
 
         expect(useRouter().push).toHaveBeenCalledTimes(1);
         expect(useRouter().push).toHaveBeenCalledWith("/555");
-
-        const error = screen.queryByText("Error fetching round data.");
+  
+        const error = screen.queryByText("Error fetching rounds data.");
         expect(error).not.toBeInTheDocument();
     });
     it("receives a bad response from API and renders an error message", async () => {
@@ -85,8 +85,8 @@ describe("GamePicker", () => {
 
         await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
         await waitFor(() => expect(global.fetch).toHaveBeenCalledWith("/555"));
-
-        const error = screen.getByText("Error fetching round data.");
+      
+        const error = screen.getByText("Error fetching rounds data.");
         expect(error).toBeInTheDocument();
     });
 });
