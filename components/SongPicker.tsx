@@ -74,12 +74,11 @@ function SongPicker() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
             {isLoading && (
-                <Image
-                    src="https://REPLACETHIS.COM/IMAGE.JPG"
-                    alt="Loading Spinner"
-                    width="50"
-                    height="50"
-                />
+                <div
+                    role="img"
+                    aria-label="Loading Spinner"
+                    className="spinner"
+                ></div>
             )}
             {errorMsg && <div className="error-div">{errorMsg}</div>}
             <div>
