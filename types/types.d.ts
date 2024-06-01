@@ -7,17 +7,28 @@ type Round = {
 
 type Song = {
     id: number;
+    round_id: number;
+    artist: string;
+    song_title: string;
+    played: boolean;
 };
 
 type Card = {
     id: number;
+    ext_card_id: number;
+    round_id: number;
 };
 
 type GameDataResponse = {
-    isProcessing: boolean;
+    isProcessingMessage: string | null;
     cur_card_perc: number;
-    rounds: Round[] | null;
-    message: string;
+    rounds: Round[];
+};
+
+type RoundDataResponse = {
+    isProcessingMessage: string | null;
+    songs: Song[];
+    cards: Card[];
 };
 
 type ContextType = {
