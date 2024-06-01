@@ -18,7 +18,7 @@ function SongPicker() {
         async function fetchRoundData() {
             try {
                 const roundDataResponse = await fetch(
-                    `/${game_id}/${round_id}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/${game_id}/${round_id}`
                 );
 
                 const rData: RoundDataResponse = await roundDataResponse.json();
@@ -48,8 +48,12 @@ function SongPicker() {
 
     function handleSongClick(i: number) {
         try {
-            fetch(`/toggle/${songs[i].id}/${songs[i].played ? 0 : 1}`).catch(
-                (error) => console.error("Error during toggle-play:", error)
+            fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/toggle/${songs[i].id}/${
+                    songs[i].played ? 0 : 1
+                }`
+            ).catch((error) =>
+                console.error("Error during toggle-play:", error)
             );
             setSongs((prevSongs) => {
                 const newSongs = [...prevSongs];

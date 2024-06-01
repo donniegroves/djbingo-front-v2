@@ -14,7 +14,9 @@ export default function GamePicker() {
         event.preventDefault();
 
         try {
-            const gameRoundsResponse = await fetch(`/${gameIdInputValue}`);
+            const gameRoundsResponse = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/${gameIdInputValue}`
+            );
             const gameRoundsData: Round[] = await gameRoundsResponse.json();
 
             context?.setGameId(parseInt(gameIdInputValue));

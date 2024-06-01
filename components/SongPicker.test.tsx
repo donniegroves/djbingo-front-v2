@@ -66,6 +66,10 @@ const mockedIncompleteDataResponse: RoundDataResponse = {
 
 function setup(mockedObject: RoundDataResponse | undefined) {
     fetchMock.resetMocks();
+    process.env = Object.assign(process.env, {
+        NEXT_PUBLIC_API_URL: "TEST_API_URL",
+    });
+
     if (mockedObject === undefined) {
         render(<SongPicker />);
     } else {
@@ -85,7 +89,7 @@ describe("SongPicker", () => {
         });
 
         expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith("/555/222");
+        expect(fetch).toHaveBeenCalledWith("TEST_API_URL/555/222");
 
         const song1Div = screen.getByRole("button", { name: "Artist1 Song1" });
         expect(song1Div).toBeInTheDocument();
@@ -109,9 +113,9 @@ describe("SongPicker", () => {
         fireEvent.click(song3Div);
 
         expect(fetch).toHaveBeenCalledTimes(3);
-        expect(fetch).toHaveBeenNthCalledWith(1, "/555/222");
-        expect(fetch).toHaveBeenNthCalledWith(2, "/toggle/2/0");
-        expect(fetch).toHaveBeenNthCalledWith(3, "/toggle/3/1");
+        expect(fetch).toHaveBeenNthCalledWith(1, "TEST_API_URL/555/222");
+        expect(fetch).toHaveBeenNthCalledWith(2, "TEST_API_URL/toggle/2/0");
+        expect(fetch).toHaveBeenNthCalledWith(3, "TEST_API_URL/toggle/3/1");
     });
     it("display loading indicator, passing along message from api", async () => {
         setup(mockedIncompleteDataResponse);
