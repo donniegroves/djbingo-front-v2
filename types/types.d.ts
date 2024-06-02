@@ -1,6 +1,5 @@
 type Round = {
     id: number;
-    game_id: number;
     round_number: number;
     round_name: string;
 };

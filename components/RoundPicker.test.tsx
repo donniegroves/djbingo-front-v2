@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import RoundPicker from "@/components/RoundPicker";
 import { useRouter } from "next/navigation";
+import AppContext from "@/context/AppContext";
 
 jest.mock("next/navigation", () => {
     const router = {
@@ -13,24 +14,38 @@ jest.mock("next/navigation", () => {
     };
 });
 
-const defaultRounds = [
+const defaultRounds: Round[] = [
     {
         id: 1,
-        game_id: 555,
         round_number: 123,
         round_name: "Smooth R&B",
     },
     {
         id: 2,
-        game_id: 555,
         round_number: 124,
         round_name: "Applesauce Round",
     },
 ];
+const mockContext: ContextType = {
+    gameId: 555,
+    currentRoundId: null,
+    rounds: defaultRounds,
+    songs: [],
+    cards: [],
+    setGameId: jest.fn(),
+    setCurrentRoundId: jest.fn(),
+    setRounds: jest.fn(),
+    setSongs: jest.fn(),
+    setCards: jest.fn(),
+};
 
 describe("RoundPicker", () => {
     it("renders the expected heading, and round divs", () => {
-        render(<RoundPicker rounds={defaultRounds} />);
+        render(
+            <AppContext.Provider value={mockContext}>
+                <RoundPicker />
+            </AppContext.Provider>
+        );
 
         const heading = screen.getByRole("heading", { level: 1 });
         expect(heading).toHaveTextContent("Available rounds for game 555:");
@@ -47,14 +62,18 @@ describe("RoundPicker", () => {
         expect(errMsg).not.toBeInTheDocument();
     });
     it("displays message when there are no rounds", () => {
-        render(<RoundPicker rounds={[]} />);
+        render(<RoundPicker />);
 
         const errMsg = screen.getByText("No rounds found.");
         expect(errMsg).toBeInTheDocument();
     });
 
     it("when round button clicked, pushes the user to the correct URL", async () => {
-        render(<RoundPicker rounds={defaultRounds} />);
+        render(
+            <AppContext.Provider value={mockContext}>
+                <RoundPicker />
+            </AppContext.Provider>
+        );
 
         const round1Div = screen.getByRole("button", {
             name: "Applesauce Round",

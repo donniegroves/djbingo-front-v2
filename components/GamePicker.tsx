@@ -15,7 +15,7 @@ export default function GamePicker() {
 
         try {
             const gameRoundsResponse = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/${gameIdInputValue}`
+                `${process.env.NEXT_PUBLIC_API_URL}/g/${gameIdInputValue}`
             );
             const gameRoundsData: Round[] = await gameRoundsResponse.json();
 

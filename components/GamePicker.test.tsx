@@ -73,7 +73,7 @@ describe("GamePicker", () => {
 
         await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
         await waitFor(() =>
-            expect(fetch).toHaveBeenCalledWith("TEST_API_URL/555")
+            expect(fetch).toHaveBeenCalledWith("TEST_API_URL/g/555")
         );
 
         expect(useRouter().push).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe("GamePicker", () => {
 
         await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
         await waitFor(() =>
-            expect(fetch).toHaveBeenCalledWith("TEST_API_URL/555")
+            expect(fetch).toHaveBeenCalledWith("TEST_API_URL/g/555")
         );
 
         const error = screen.getByText("Error fetching rounds data.");
