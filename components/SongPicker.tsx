@@ -1,16 +1,16 @@
 "use client";
 
 import AppContext from "@/context/AppContext";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 
 function SongPicker() {
-    const params = useParams<{ game_id: string; round_id: string }>();
-    const game_id = parseInt(params.game_id);
-    const round_id = parseInt(params.round_id);
-    const context = useContext(AppContext);
-    const [songs, setSongs] = React.useState<Song[]>([]);
+    const { game_id, round_id } = useParams<{
+        game_id: string;
+        round_id: string;
+    }>();
+    const { setSongs, setCards } = useContext(AppContext);
+    const [stateSongs, setStateSongs] = React.useState<Song[]>([]);
     const [errorMsg, setErrorMsg] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
@@ -18,7 +18,7 @@ function SongPicker() {
         async function fetchRoundData() {
             try {
                 const roundDataResponse = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/${game_id}/${round_id}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/r/${round_id}`
                 );
 
                 const rData: RoundDataResponse = await roundDataResponse.json();
@@ -29,9 +29,9 @@ function SongPicker() {
                     return;
                 } else {
                     setIsLoading(false);
-                    context?.setSongs(rData.songs);
                     setSongs(rData.songs);
-                    context?.setCards(rData.cards);
+                    setStateSongs(rData.songs);
+                    setCards(rData.cards);
                 }
             } catch (e) {
                 console.log(e);
@@ -44,18 +44,18 @@ function SongPicker() {
         }
 
         fetchRoundData();
-    }, [game_id, round_id, context]);
+    }, [round_id, setCards, setSongs]);
 
     function handleSongClick(i: number) {
         try {
             fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/toggle/${songs[i].id}/${
-                    songs[i].played ? 0 : 1
-                }`
+                `${process.env.NEXT_PUBLIC_API_URL}/toggle/${
+                    stateSongs[i].id
+                }/${stateSongs[i].played ? 0 : 1}`
             ).catch((error) =>
                 console.error("Error during toggle-play:", error)
             );
-            setSongs((prevSongs) => {
+            setStateSongs((prevSongs) => {
                 const newSongs = [...prevSongs];
                 newSongs[i].played = !newSongs[i].played;
                 return newSongs;
@@ -86,8 +86,8 @@ function SongPicker() {
                 <p>useParams game_id: {game_id}</p>
                 <p>useParams round_id: {round_id}</p>
                 <hr></hr>
-                <p>Songs in this round: {songs.length}</p>
-                {songs.map((song, i) => {
+                <p>Songs in this round: {stateSongs.length}</p>
+                {stateSongs.map((song, i) => {
                     return (
                         <div
                             role="button"

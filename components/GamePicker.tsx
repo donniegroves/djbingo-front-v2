@@ -19,8 +19,8 @@ export default function GamePicker() {
             );
             const gameRoundsData: Round[] = await gameRoundsResponse.json();
 
-            context?.setGameId(parseInt(gameIdInputValue));
-            context?.setRounds(gameRoundsData);
+            context.setGameId(parseInt(gameIdInputValue));
+            context.setRounds(gameRoundsData);
         } catch {
             setError("Error fetching rounds data.");
             return;

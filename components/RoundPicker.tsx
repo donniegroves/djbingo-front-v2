@@ -10,8 +10,8 @@ function RoundPicker() {
     const context = useContext(AppContext);
 
     function handleRoundClick(round_id: number) {
-        context?.setGameId(parseInt(game_id));
-        context?.setCurrentRoundId(round_id);
+        context.setGameId(parseInt(game_id));
+        context.setCurrentRoundId(round_id);
 
         router.push(`/${game_id}/${round_id}`);
     }
@@ -19,10 +19,8 @@ function RoundPicker() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
             <h1>Available rounds for game {game_id}:</h1>
-            {(!context?.rounds || context.rounds.length == 0) && (
-                <p>No rounds found.</p>
-            )}
-            {context?.rounds &&
+            {context.rounds.length == 0 && <p>No rounds found.</p>}
+            {context.rounds.length > 0 &&
                 context.rounds.map((round) => {
                     return (
                         <div

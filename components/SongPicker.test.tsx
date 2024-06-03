@@ -89,7 +89,7 @@ describe("SongPicker", () => {
         });
 
         expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith("TEST_API_URL/555/222");
+        expect(fetch).toHaveBeenCalledWith("TEST_API_URL/r/222");
 
         const song1Div = screen.getByRole("button", { name: "Artist1 Song1" });
         expect(song1Div).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe("SongPicker", () => {
         fireEvent.click(song3Div);
 
         expect(fetch).toHaveBeenCalledTimes(3);
-        expect(fetch).toHaveBeenNthCalledWith(1, "TEST_API_URL/555/222");
+        expect(fetch).toHaveBeenNthCalledWith(1, "TEST_API_URL/r/222");
         expect(fetch).toHaveBeenNthCalledWith(2, "TEST_API_URL/toggle/2/0");
         expect(fetch).toHaveBeenNthCalledWith(3, "TEST_API_URL/toggle/3/1");
     });
