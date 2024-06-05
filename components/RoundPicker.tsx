@@ -1,27 +1,41 @@
 "use client";
 
-import AppContext from "@/context/AppContext";
 import { useParams, useRouter } from "next/navigation";
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 
 function RoundPicker() {
     const router = useRouter();
     const { game_id } = useParams() as { game_id: string };
-    const context = useContext(AppContext);
+    const [rounds, setRounds] = useState<Round[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchRounds = async () => {
+            try {
+                const gameRoundsResponse = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/g/${game_id}`
+                );
+                const gameRoundsData: Round[] = await gameRoundsResponse.json();
+                setRounds(gameRoundsData);
+            } catch {
+                setError("Failed to fetch rounds.");
+            }
+        };
+
+        fetchRounds();
+    }, [game_id]);
 
     function handleRoundClick(round_id: number) {
-        context.setGameId(parseInt(game_id));
-        context.setCurrentRoundId(round_id);
-
         router.push(`/${game_id}/${round_id}`);
     }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
             <h1>Available rounds for game {game_id}:</h1>
-            {context.rounds.length == 0 && <p>No rounds found.</p>}
-            {context.rounds.length > 0 &&
-                context.rounds.map((round) => {
+            {error && <p>{error}</p>}
+            {rounds.length == 0 && <p>No rounds found.</p>}
+            {rounds.length > 0 &&
+                rounds.map((round) => {
                     return (
                         <div
                             role="button"

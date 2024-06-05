@@ -1,28 +1,23 @@
 "use client";
 
-import AppContext from "@/context/AppContext";
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 export default function GamePicker() {
-    const [gameIdInputValue, setGameIdInputValue] = useState("");
+    const [gameIdInputValue, setGameIdInputValue] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
-    const context = useContext(AppContext);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        try {
-            const gameRoundsResponse = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/g/${gameIdInputValue}`
-            );
-            const gameRoundsData: Round[] = await gameRoundsResponse.json();
+        if (!gameIdInputValue || gameIdInputValue === "") {
+            setError("Please enter a game number.");
+            return;
+        }
 
-            context.setGameId(parseInt(gameIdInputValue));
-            context.setRounds(gameRoundsData);
-        } catch {
-            setError("Error fetching rounds data.");
+        if (isNaN(Number(gameIdInputValue))) {
+            setError("Game number must be a number.");
             return;
         }
 

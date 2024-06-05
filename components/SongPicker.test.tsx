@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { useRouter } from "next/navigation";
 import SongPicker from "./SongPicker";
-import fetchMock from "jest-fetch-mock";
 
 jest.mock("next/navigation", () => {
     const router = {
@@ -13,9 +11,25 @@ jest.mock("next/navigation", () => {
         useParams: jest.fn().mockReturnValue({ game_id: 555, round_id: 222 }),
     };
 });
-fetchMock.enableMocks();
 
-const mockedCompleteDataResponse: RoundDataResponse = {
+function mockFetchInit(
+    responseData: RoundDataResponse | null,
+    error: boolean = false
+) {
+    if (error) {
+        global.fetch = jest
+            .fn()
+            .mockImplementation(() => Promise.reject("Error"));
+    } else {
+        const mockJsonPromise = Promise.resolve(responseData);
+        const mockFetchPromise = Promise.resolve({
+            json: () => mockJsonPromise,
+        });
+        global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
+    }
+}
+
+const mockCompleteResponse: RoundDataResponse = {
     isProcessingMessage: null,
     songs: [
         {
@@ -64,23 +78,27 @@ const mockedIncompleteDataResponse: RoundDataResponse = {
     cards: [],
 };
 
-function setup(mockedObject: RoundDataResponse | undefined) {
-    fetchMock.resetMocks();
+function setup(responseData: RoundDataResponse | null, error: boolean = false) {
     process.env = Object.assign(process.env, {
         NEXT_PUBLIC_API_URL: "TEST_API_URL",
     });
 
-    if (mockedObject === undefined) {
-        render(<SongPicker />);
-    } else {
-        fetchMock.mockResponseOnce(JSON.stringify(mockedObject));
-        render(<SongPicker />);
-    }
+    mockFetchInit(responseData, error);
+
+    render(<SongPicker />);
 }
 
 describe("SongPicker", () => {
+    it("error fetching data, displays error message", async () => {
+        setup(null, true);
+
+        await waitFor(() => {
+            const errorMsg = screen.getByText("Error fetching round data.");
+            expect(errorMsg).toBeInTheDocument();
+        });
+    });
     it("makes initial call to API for round, populates context, displays 3 songs provided by context and when clicked, makes a call to api to toggle played", async () => {
-        setup(mockedCompleteDataResponse);
+        setup(mockCompleteResponse);
 
         await waitFor(() => {
             expect(
@@ -99,7 +117,7 @@ describe("SongPicker", () => {
         expect(song3Div).toBeInTheDocument();
     });
     it("when clicking songs, makes a call to api to toggle played", async () => {
-        setup(mockedCompleteDataResponse);
+        setup(mockCompleteResponse);
 
         await waitFor(() => {
             expect(
@@ -121,15 +139,12 @@ describe("SongPicker", () => {
         setup(mockedIncompleteDataResponse);
 
         await waitFor(() => {
-            const loadingSpinner = screen.getByRole("img", {
+            screen.getByRole("img", {
                 name: "Loading Spinner",
             });
-            expect(loadingSpinner).toBeInTheDocument();
-
-            const loadingMsg = screen.getByText(
+            screen.getByText(
                 "Still collecting data. 0 cards processed out of 300."
             );
-            expect(loadingMsg).toBeInTheDocument();
         });
     });
 });

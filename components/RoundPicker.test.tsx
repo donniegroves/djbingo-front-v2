@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RoundPicker from "@/components/RoundPicker";
 import { useRouter } from "next/navigation";
-import AppContext from "@/context/AppContext";
 
 jest.mock("next/navigation", () => {
     const router = {
@@ -14,7 +13,7 @@ jest.mock("next/navigation", () => {
     };
 });
 
-const defaultRounds: Round[] = [
+const mockSuccessResponse: Round[] = [
     {
         id: 1,
         round_number: 123,
@@ -26,64 +25,60 @@ const defaultRounds: Round[] = [
         round_name: "Applesauce Round",
     },
 ];
-const mockContext: ContextType = {
-    gameId: 555,
-    currentRoundId: null,
-    rounds: defaultRounds,
-    songs: [],
-    cards: [],
-    setGameId: jest.fn(),
-    setCurrentRoundId: jest.fn(),
-    setRounds: jest.fn(),
-    setSongs: jest.fn(),
-    setCards: jest.fn(),
-};
+const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+const mockFetchPromise = Promise.resolve({ json: () => mockJsonPromise });
+global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
 describe("RoundPicker", () => {
-    it("renders the expected heading, and round divs", () => {
-        render(
-            <AppContext.Provider value={mockContext}>
-                <RoundPicker />
-            </AppContext.Provider>
-        );
+    it("renders the expected heading, and shows initial no rounds message", () => {
+        render(<RoundPicker />);
 
         const heading = screen.getByRole("heading", { level: 1 });
         expect(heading).toHaveTextContent("Available rounds for game 555:");
 
-        const round1Div = screen.getByRole("button", { name: "Smooth R&B" });
-        expect(round1Div).toBeInTheDocument();
-
-        const round2Div = screen.getByRole("button", {
-            name: "Applesauce Round",
-        });
-        expect(round2Div).toBeInTheDocument();
-
         const errMsg = screen.queryByText("No rounds found.");
-        expect(errMsg).not.toBeInTheDocument();
-    });
-    it("displays message when there are no rounds", () => {
-        render(<RoundPicker />);
-
-        const errMsg = screen.getByText("No rounds found.");
         expect(errMsg).toBeInTheDocument();
     });
 
-    it("when round button clicked, pushes the user to the correct URL", async () => {
-        render(
-            <AppContext.Provider value={mockContext}>
-                <RoundPicker />
-            </AppContext.Provider>
-        );
+    it("when fetch succeeds, renders the rounds", async () => {
+        render(<RoundPicker />);
 
-        const round1Div = screen.getByRole("button", {
-            name: "Applesauce Round",
+        await waitFor(() => {
+            const round1Div = screen.getByRole("button", {
+                name: "Smooth R&B",
+            });
+            expect(round1Div).toBeInTheDocument();
         });
-        fireEvent.click(round1Div);
+    });
+
+    it("when fetch fails, shows an error message", async () => {
+        global.fetch = jest
+            .fn()
+            .mockImplementation(() => Promise.reject("Error"));
+
+        render(<RoundPicker />);
+
+        await waitFor(() => {
+            const error = screen.getByText("Failed to fetch rounds.");
+            expect(error).toBeInTheDocument();
+        });
+    });
+
+    it("when round button clicked, pushes the user to the correct URL", async () => {
+        global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
+        render(<RoundPicker />);
+
+        await waitFor(() => {
+            const round1Div = screen.getByRole("button", {
+                name: "Applesauce Round",
+            });
+            fireEvent.click(round1Div);
+        });
 
         expect(useRouter().push).toHaveBeenCalledTimes(1);
         expect(useRouter().push).toHaveBeenCalledWith("/555/2");
 
-        const error = screen.queryByText("Error fetching round data.");
+        const error = screen.queryByText("Failed to fetch rounds.");
         expect(error).not.toBeInTheDocument();
     });
 });

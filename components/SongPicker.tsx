@@ -1,15 +1,13 @@
 "use client";
 
-import AppContext from "@/context/AppContext";
 import { useParams } from "next/navigation";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 function SongPicker() {
     const { game_id, round_id } = useParams<{
         game_id: string;
         round_id: string;
     }>();
-    const { setSongs, setCards } = useContext(AppContext);
     const [stateSongs, setStateSongs] = React.useState<Song[]>([]);
     const [errorMsg, setErrorMsg] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -29,22 +27,16 @@ function SongPicker() {
                     return;
                 } else {
                     setIsLoading(false);
-                    setSongs(rData.songs);
                     setStateSongs(rData.songs);
-                    setCards(rData.cards);
                 }
             } catch (e) {
                 console.log(e);
-                setErrorMsg(
-                    `Error fetching round data. ${
-                        typeof e == "string" ? e : ""
-                    }`
-                );
+                setErrorMsg("Error fetching round data.");
             }
         }
 
         fetchRoundData();
-    }, [round_id, setCards, setSongs]);
+    }, [round_id]);
 
     function handleSongClick(i: number) {
         try {
