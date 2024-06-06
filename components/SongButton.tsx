@@ -5,11 +5,9 @@ import React, { useState } from "react";
 function SongButton({
     song,
     setSongs,
-    setErrorMsg,
 }: {
     song: Song;
     setSongs: React.Dispatch<React.SetStateAction<Song[]>>;
-    setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {
     const [played, setPlayed] = useState<boolean>(song.played);
     const [buttonError, setButtonError] = useState<string | null>(null);
@@ -38,11 +36,6 @@ function SongButton({
             });
         } catch (error) {
             setButtonError("Problem with toggling played status.");
-            setErrorMsg(
-                `Problem with toggling played status. ${
-                    typeof error == "string" ? error : ""
-                }`
-            );
         }
     }
 

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import SongPicker from "./SongPicker";
+import SongCardPage from "./SongCardPage";
 
 jest.mock("next/navigation", () => {
     const router = {
@@ -85,10 +85,10 @@ function setup(responseData: RoundDataResponse | null, error: boolean = false) {
 
     mockFetchInit(responseData, error);
 
-    render(<SongPicker />);
+    render(<SongCardPage />);
 }
 
-describe("SongPicker", () => {
+describe("SongCardPage", () => {
     it("error fetching data, displays error message", async () => {
         setup(null, true);
 
