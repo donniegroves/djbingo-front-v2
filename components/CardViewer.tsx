@@ -2,13 +2,24 @@
 
 import React, { useEffect } from "react";
 
-function CardViewer() {
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
-            <div>
-                <h1>Card Viewer</h1>
+function CardViewer({ songs, cards }: { songs: Song[]; cards: Card[] }) {
+    const songCardsDivs = cards.map((card) => {
+        return (
+            <div role="button" key={card.id} aria-label={`Card ${card.id}`}>
+                <h4>Card {card.id}</h4>
+                <div className="card-grid">card-grid here</div>
             </div>
-        </main>
+        );
+    });
+
+    return (
+        <div>
+            <h1>Card Viewer</h1>
+            <p>Number of songs: {songs.length}</p>
+            <p>Number of cards: {cards.length}</p>
+            <hr />
+            {songCardsDivs}
+        </div>
     );
 }
 
