@@ -97,7 +97,7 @@ describe("SongPicker", () => {
             expect(errorMsg).toBeInTheDocument();
         });
     });
-    it("makes initial call to API for round, populates context, displays 3 songs provided by context and when clicked, makes a call to api to toggle played", async () => {
+    it("makes initial call to API for round, displays 3 songs", async () => {
         setup(mockCompleteResponse);
 
         await waitFor(() => {
@@ -109,31 +109,12 @@ describe("SongPicker", () => {
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith("TEST_API_URL/r/222");
 
-        const song1Div = screen.getByRole("button", { name: "Artist1 Song1" });
+        const song1Div = screen.getByRole("button", { name: "Song1 Artist1" });
         expect(song1Div).toBeInTheDocument();
-        const song2Div = screen.getByRole("button", { name: "Artist2 Song2" });
+        const song2Div = screen.getByRole("button", { name: "Song2 Artist2" });
         expect(song2Div).toBeInTheDocument();
-        const song3Div = screen.getByRole("button", { name: "Artist3 Song3" });
+        const song3Div = screen.getByRole("button", { name: "Song3 Artist3" });
         expect(song3Div).toBeInTheDocument();
-    });
-    it("when clicking songs, makes a call to api to toggle played", async () => {
-        setup(mockCompleteResponse);
-
-        await waitFor(() => {
-            expect(
-                screen.getByText("Songs in this round: 3")
-            ).toBeInTheDocument();
-        });
-
-        const song2Div = screen.getByRole("button", { name: "Artist2 Song2" });
-        const song3Div = screen.getByRole("button", { name: "Artist3 Song3" });
-        fireEvent.click(song2Div);
-        fireEvent.click(song3Div);
-
-        expect(fetch).toHaveBeenCalledTimes(3);
-        expect(fetch).toHaveBeenNthCalledWith(1, "TEST_API_URL/r/222");
-        expect(fetch).toHaveBeenNthCalledWith(2, "TEST_API_URL/toggle/2/0");
-        expect(fetch).toHaveBeenNthCalledWith(3, "TEST_API_URL/toggle/3/1");
     });
     it("display loading indicator, passing along message from api", async () => {
         setup(mockedIncompleteDataResponse);

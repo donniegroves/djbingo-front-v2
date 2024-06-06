@@ -56,3 +56,10 @@ input {
     }
 }
 /* END SONGPICKER */
+
+/* BEGIN SONGBUTTON */
+.played {
+    background-color: #ffc003;
+    color: #000;
+}
+/* END SONGBUTTON */
