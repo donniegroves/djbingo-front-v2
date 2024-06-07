@@ -2,7 +2,15 @@
 
 import React, { useEffect } from "react";
 
-function CardViewer({ songs, cards }: { songs: Song[]; cards: Card[] }) {
+function CardViewer({
+    songs,
+    cards,
+    positions,
+}: {
+    songs: Song[];
+    cards: Card[];
+    positions: Position[];
+}) {
     const songCardsDivs = cards.map((card) => {
         return (
             <div role="button" key={card.id} aria-label={`Card ${card.id}`}>

@@ -18,6 +18,13 @@ type Card = {
     round_id: number;
 };
 
+type Position = {
+    ext_card_id: number;
+    song_id: number;
+    row: number;
+    col: number;
+};
+
 type GameDataResponse = {
     isProcessingMessage: string | null;
     cur_card_perc: number;
@@ -28,6 +35,7 @@ type RoundDataResponse = {
     isProcessingMessage: string | null;
     songs: Song[];
     cards: Card[];
+    positions: Position[];
 };
 
 type ContextType = {

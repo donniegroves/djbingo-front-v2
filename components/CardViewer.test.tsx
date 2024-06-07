@@ -52,16 +52,43 @@ const mockCards: Card[] = [
     },
 ];
 
+const mockPositions: Position[] = [
+    {
+        ext_card_id: 7777,
+        song_id: 1,
+        row: 1,
+        col: 1,
+    },
+    {
+        ext_card_id: 7777,
+        song_id: 1,
+        row: 1,
+        col: 1,
+    },
+];
+
 describe("CardViewer", () => {
     it("shows Card Viewer and number of songs and cards", async () => {
-        render(<CardViewer songs={mockSongs} cards={mockCards} />);
+        render(
+            <CardViewer
+                songs={mockSongs}
+                cards={mockCards}
+                positions={mockPositions}
+            />
+        );
 
         screen.getByText("Card Viewer");
         screen.getByText("Number of songs: 2");
         screen.getByText("Number of cards: 4");
     });
     it("displays 4 card grids", async () => {
-        render(<CardViewer songs={mockSongs} cards={mockCards} />);
+        render(
+            <CardViewer
+                songs={mockSongs}
+                cards={mockCards}
+                positions={mockPositions}
+            />
+        );
         screen.getByLabelText("Card 1");
         screen.getByLabelText("Card 2");
         screen.getByLabelText("Card 3");
