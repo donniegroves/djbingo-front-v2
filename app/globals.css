@@ -57,9 +57,13 @@ input {
 }
 /* END SONGPICKER */
 
-/* BEGIN SONGBUTTON */
+/* BEGIN SONGBUTTON AND CARDVIEWER */
 .played {
     background-color: #ffc003;
     color: #000;
+}
+
+.winners .played {
+    background-color: #00ff4c;
 }
 /* END SONGBUTTON */

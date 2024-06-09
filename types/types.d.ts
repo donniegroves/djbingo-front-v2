@@ -18,12 +18,7 @@ type Card = {
     round_id: number;
 };
 
-type Position = {
-    ext_card_id: number;
-    song_id: number;
-    row: number;
-    col: number;
-};
+type Positions = { [key: string]: number[] };
 
 type GameDataResponse = {
     isProcessingMessage: string | null;
@@ -35,7 +30,7 @@ type RoundDataResponse = {
     isProcessingMessage: string | null;
     songs: Song[];
     cards: Card[];
-    positions: Position[];
+    positions: Positions;
 };
 
 type ContextType = {
