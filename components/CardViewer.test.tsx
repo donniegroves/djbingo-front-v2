@@ -146,13 +146,25 @@ const mockPositions: Positions = {
 
 describe("CardViewer", () => {
     it("shows Card Viewer and number of songs and cards", async () => {
-        render(<CardViewer songs={mockSongs} songPositions={mockPositions} />);
+        render(
+            <CardViewer
+                songs={mockSongs}
+                songPositions={mockPositions}
+                roundNumber={1}
+            />
+        );
 
         screen.getByText("Card Viewer");
         screen.getByText("Number of cards: 3");
     });
     it("displays 3 card grids", async () => {
-        render(<CardViewer songs={mockSongs} songPositions={mockPositions} />);
+        render(
+            <CardViewer
+                songs={mockSongs}
+                songPositions={mockPositions}
+                roundNumber={1}
+            />
+        );
         screen.getByLabelText("Card 7777");
         screen.getByLabelText("Card 8888");
         screen.getByLabelText("Card 9999");

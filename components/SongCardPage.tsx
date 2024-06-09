@@ -12,6 +12,7 @@ export default function SongCardPage() {
     const [activeTab, setActiveTab] = useState<"songs" | "cards">("songs");
     const [songs, setSongs] = useState<Song[]>([]);
     const [positions, setPositions] = useState<Positions>({});
+    const [roundNumber, setRoundNumber] = useState<1 | 2 | 3 | 4>(1);
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -31,6 +32,7 @@ export default function SongCardPage() {
                     setIsLoading(false);
                     setSongs(rData.songs);
                     setPositions(rData.positions);
+                    setRoundNumber(rData.roundNumber);
                 }
             } catch (e) {
                 console.log(e);
@@ -77,7 +79,11 @@ export default function SongCardPage() {
                 {activeTab === "songs" ? (
                     <SongPicker songs={songs} setSongs={setSongs} />
                 ) : (
-                    <CardViewer songs={songs} songPositions={positions} />
+                    <CardViewer
+                        songs={songs}
+                        songPositions={positions}
+                        roundNumber={roundNumber}
+                    />
                 )}
             </div>
         </main>

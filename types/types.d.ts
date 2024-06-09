@@ -30,6 +30,7 @@ type RoundDataResponse = {
     isProcessingMessage: string | null;
     songs: Song[];
     positions: Positions;
+    roundNumber: 1 | 2 | 3 | 4;
 };
 
 type ContextType = {

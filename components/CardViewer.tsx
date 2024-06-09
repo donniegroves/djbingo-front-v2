@@ -3,9 +3,11 @@
 function CardViewer({
     songs,
     songPositions,
+    roundNumber,
 }: {
     songs: Song[];
     songPositions: Positions;
+    roundNumber: 1 | 2 | 3 | 4;
 }) {
     const songPlayedStatuses: Record<number, boolean> = songs.reduce(
         (acc, song) => {
@@ -51,7 +53,7 @@ function CardViewer({
             return songPlayedStatuses[songId];
         });
 
-        if (isWinningCard(pattern, 1)) {
+        if (isWinningCard(pattern, roundNumber)) {
             winningCards.push({
                 cardId,
                 playedPositions: pattern,

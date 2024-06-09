@@ -59,6 +59,7 @@ const mockedIncompleteDataResponse: RoundDataResponse = {
     isProcessingMessage: "Still collecting data. 0 cards processed out of 300.",
     songs: [],
     positions: {},
+    roundNumber: 1,
 };
 
 function setup(responseData: RoundDataResponse | null, error: boolean = false) {
