@@ -43,7 +43,7 @@ function SongButton({
         <div
             role="button"
             onClick={() => handleSongClick()}
-            className={`flex flex-col border border-gray-300 p-2 m-2${
+            className={`flex flex-col border border-gray-300 w-[350px] p-2 m-2${
                 played ? " played" : ""
             }`}
         >

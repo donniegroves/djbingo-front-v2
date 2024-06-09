@@ -11,7 +11,6 @@ export default function SongCardPage() {
     }>();
     const [activeTab, setActiveTab] = useState<"songs" | "cards">("songs");
     const [songs, setSongs] = useState<Song[]>([]);
-    const [cards, setCards] = useState<Card[]>([]);
     const [positions, setPositions] = useState<Positions>({});
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -31,7 +30,6 @@ export default function SongCardPage() {
                 } else {
                     setIsLoading(false);
                     setSongs(rData.songs);
-                    setCards(rData.cards);
                     setPositions(rData.positions);
                 }
             } catch (e) {

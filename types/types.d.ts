@@ -29,7 +29,6 @@ type GameDataResponse = {
 type RoundDataResponse = {
     isProcessingMessage: string | null;
     songs: Song[];
-    cards: Card[];
     positions: Positions;
 };
 
@@ -38,7 +37,6 @@ type ContextType = {
     currentRoundId: number | null;
     rounds: Round[];
     songs: Song[];
-    cards: Card[];
     setGameId: (gameId: number) => void;
     setCurrentRoundId: (roundId: number) => void;
     setRounds: (rounds: Round[]) => void;

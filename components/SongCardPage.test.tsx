@@ -54,28 +54,11 @@ const mockCompleteResponse: RoundDataResponse = {
             played: false,
         },
     ],
-    cards: [
-        {
-            id: 1,
-            ext_card_id: 7777,
-            round_id: 222,
-        },
-        {
-            id: 2,
-            ext_card_id: 8888,
-            round_id: 222,
-        },
-        {
-            id: 3,
-            ext_card_id: 9999,
-            round_id: 222,
-        },
-    ],
 };
 const mockedIncompleteDataResponse: RoundDataResponse = {
     isProcessingMessage: "Still collecting data. 0 cards processed out of 300.",
     songs: [],
-    cards: [],
+    positions: {},
 };
 
 function setup(responseData: RoundDataResponse | null, error: boolean = false) {
