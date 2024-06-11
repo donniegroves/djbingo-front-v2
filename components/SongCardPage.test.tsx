@@ -54,6 +54,12 @@ const mockCompleteResponse: RoundDataResponse = {
             played: false,
         },
     ],
+    positions: {
+        7777: [11, 1, 6, 7, 5, 3, 10, 2, 14, 15, 8, 4, 13, 12, 9],
+        8888: [4, 6, 10, 15, 1, 9, 5, 12, 2, 11, 7, 3, 13, 14, 8],
+        9999: [13, 6, 9, 12, 11, 3, 4, 1, 5, 7, 2, 10, 8, 14, 15],
+    },
+    roundNumber: 2,
 };
 const mockedIncompleteDataResponse: RoundDataResponse = {
     isProcessingMessage: "Still collecting data. 0 cards processed out of 300.",

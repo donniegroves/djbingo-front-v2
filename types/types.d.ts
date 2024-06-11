@@ -18,6 +18,11 @@ type Card = {
     round_id: number;
 };
 
+type CardsForViewer = {
+    cardId: string;
+    playedPositions: boolean[];
+}[];
+
 type Positions = { [key: string]: number[] };
 
 type GameDataResponse = {

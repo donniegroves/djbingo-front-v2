@@ -30,7 +30,7 @@ function RoundPicker() {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
+        <main className="flex flex-col text-center p-4">
             <h1>Available rounds for game {game_id}:</h1>
             {error && <p>{error}</p>}
             {rounds.length == 0 && <p>No rounds found.</p>}

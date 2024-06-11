@@ -4,6 +4,7 @@ import CardViewer from "@/components/CardViewer";
 import SongPicker from "@/components/SongPicker";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import NavBar from "./NavBar";
 
 export default function SongCardPage() {
     const { round_id } = useParams<{
@@ -24,7 +25,6 @@ export default function SongCardPage() {
                     `${process.env.NEXT_PUBLIC_API_URL}/r/${round_id}`
                 );
                 const rData: RoundDataResponse = await roundDataResponse.json();
-
                 if (rData.isProcessingMessage) {
                     setErrorMsg(rData.isProcessingMessage);
                     return;
@@ -66,26 +66,84 @@ export default function SongCardPage() {
         );
     }
 
+    const songPlayedStatuses: Record<number, boolean> = songs.reduce(
+        (acc, song) => {
+            return {
+                ...acc,
+                [song.id]: song.played,
+            };
+        },
+        {}
+    );
+
+    function isWinningCard(cPattern: boolean[], round_number: 1 | 2 | 3 | 4) {
+        const allWinningPatterns = {
+            round1: [
+                [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+            ],
+            round2: [
+                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            ],
+            round3: [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]],
+            round4: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        };
+
+        const winningPatterns = allWinningPatterns[`round${round_number}`];
+
+        return winningPatterns.some((wPattern) => {
+            return wPattern.every(
+                (value, index) =>
+                    (wPattern[index] === 1 && cPattern[index]) ||
+                    wPattern[index] === 0
+            );
+        });
+    }
+
+    const winningCards: { cardId: string; playedPositions: boolean[] }[] = [];
+
+    const finalCards = Object.keys(positions).map((cardId) => {
+        const pattern = positions[cardId].map((songId) => {
+            return songPlayedStatuses[songId];
+        });
+
+        if (isWinningCard(pattern, roundNumber)) {
+            // setActiveTab("cards");
+            winningCards.push({
+                cardId,
+                playedPositions: pattern,
+            });
+        }
+
+        return {
+            cardId,
+            playedPositions: pattern,
+        };
+    });
+
     return (
-        <main className="flex flex-col text-center p-4">
-            <div>
-                <button
-                    onClick={() =>
-                        setActiveTab(activeTab === "songs" ? "cards" : "songs")
-                    }
-                >
-                    {activeTab === "songs" ? "Cards" : "Songs"}
-                </button>
-                {activeTab === "songs" ? (
-                    <SongPicker songs={songs} setSongs={setSongs} />
-                ) : (
-                    <CardViewer
-                        songs={songs}
-                        songPositions={positions}
-                        roundNumber={roundNumber}
-                    />
-                )}
-            </div>
-        </main>
+        <>
+            <header className="sticky top-0 z-50 bg-black">
+                <NavBar
+                    setActiveTab={setActiveTab}
+                    winner={winningCards.length > 0}
+                />
+            </header>
+            <main className="flex flex-col text-center p-4">
+                <div>
+                    {activeTab === "songs" ? (
+                        <SongPicker songs={songs} setSongs={setSongs} />
+                    ) : (
+                        <CardViewer
+                            finalCards={finalCards}
+                            winningCards={winningCards}
+                        />
+                    )}
+                </div>
+            </main>
+        </>
     );
 }
