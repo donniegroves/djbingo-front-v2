@@ -10,9 +10,15 @@ function SongPicker({
     songs: Song[];
     setSongs: React.Dispatch<React.SetStateAction<Song[]>>;
 }) {
+    const getPlayedSongsCount = () => {
+        return songs.filter((song) => song.played).length;
+    };
+
     return (
         <div>
-            <p>Songs in this round: {songs.length}</p>
+            <p>
+                Played songs: {getPlayedSongsCount()}/{songs.length}
+            </p>
             <div className="flex flex-col items-center">
                 {songs.map((song, i) => {
                     return (

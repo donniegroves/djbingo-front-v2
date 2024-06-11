@@ -91,9 +91,7 @@ describe("SongCardPage", () => {
         setup(mockCompleteResponse);
 
         await waitFor(() => {
-            expect(
-                screen.getByText("Songs in this round: 3")
-            ).toBeInTheDocument();
+            expect(screen.getByText("Played songs: 1/3")).toBeInTheDocument();
         });
 
         expect(fetch).toHaveBeenCalledTimes(1);
