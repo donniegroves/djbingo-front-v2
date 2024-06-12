@@ -3,7 +3,9 @@
 import { useParams, useRouter } from "next/navigation";
 
 type NavBarProps = {
-    setActiveTab: React.Dispatch<React.SetStateAction<"cards" | "songs">>;
+    setActiveTab: React.Dispatch<
+        React.SetStateAction<"cards" | "songs" | "settings">
+    >;
     winner: boolean;
 };
 
@@ -44,8 +46,7 @@ const NavBar: React.FC<NavBarProps> = ({ setActiveTab, winner }) => {
             <button
                 className="flex-1 text-center border-r border-l"
                 onClick={() => {
-                    // TODO
-                    alert("Coming soon...");
+                    setActiveTab("settings");
                 }}
             >
                 Settings

@@ -5,12 +5,15 @@ import SongPicker from "@/components/SongPicker";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
+import Settings from "./Settings";
 
 export default function SongCardPage() {
     const { round_id } = useParams<{
         round_id: string;
     }>();
-    const [activeTab, setActiveTab] = useState<"songs" | "cards">("songs");
+    const [activeTab, setActiveTab] = useState<"songs" | "cards" | "settings">(
+        "songs"
+    );
     const [songs, setSongs] = useState<Song[]>([]);
     const [positions, setPositions] = useState<Positions>({});
     const [roundNumber, setRoundNumber] = useState<1 | 2 | 3 | 4>(1);
@@ -124,6 +127,24 @@ export default function SongCardPage() {
         };
     });
 
+    const mainContent = (() => {
+        switch (activeTab) {
+            case "cards":
+                return (
+                    <CardViewer
+                        finalCards={finalCards}
+                        winningCards={winningCards}
+                    />
+                );
+            case "songs":
+                return <SongPicker songs={songs} setSongs={setSongs} />;
+            case "settings":
+                return <Settings />;
+            default:
+                return null;
+        }
+    })();
+
     return (
         <>
             <header className="sticky top-0 z-50 bg-black">
@@ -133,16 +154,7 @@ export default function SongCardPage() {
                 />
             </header>
             <main className="flex flex-col text-center p-4">
-                <div>
-                    {activeTab === "songs" ? (
-                        <SongPicker songs={songs} setSongs={setSongs} />
-                    ) : (
-                        <CardViewer
-                            finalCards={finalCards}
-                            winningCards={winningCards}
-                        />
-                    )}
-                </div>
+                <div>{mainContent}</div>
             </main>
         </>
     );
