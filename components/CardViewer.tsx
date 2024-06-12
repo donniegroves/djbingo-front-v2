@@ -15,7 +15,28 @@ function CardViewer({
     function generateGrids(
         cards: { cardId: string; playedPositions: boolean[] }[]
     ) {
-        return cards.map((fCard) => {
+        const finalCards: {
+            cardId: string;
+            playedCount: number;
+            playedPositions: boolean[];
+        }[] = [];
+        cards.map((fCard) => {
+            let tempPlayedCount = 0;
+            fCard.playedPositions.map((played, i) => {
+                if (played) {
+                    tempPlayedCount++;
+                }
+            });
+            finalCards.push({
+                cardId: fCard.cardId,
+                playedCount: tempPlayedCount,
+                playedPositions: fCard.playedPositions,
+            });
+        });
+
+        finalCards.sort((a, b) => b.playedCount - a.playedCount);
+
+        return finalCards.map((fCard) => {
             return (
                 <Link
                     href={`${process.env.NEXT_PUBLIC_EXTERNAL_BINGO_URL}?GameID=${game_id}&CardID=Auto&GenerateCardID=${fCard.cardId}`}
