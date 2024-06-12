@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
 function CardViewer({
     finalCards,
     winningCards,
@@ -7,30 +10,37 @@ function CardViewer({
     finalCards: CardsForViewer;
     winningCards: CardsForViewer;
 }) {
+    const { game_id } = useParams() as { game_id: string };
+
     function generateGrids(
         cards: { cardId: string; playedPositions: boolean[] }[]
     ) {
         return cards.map((fCard) => {
             return (
-                <div
+                <Link
+                    href={`${process.env.NEXT_PUBLIC_EXTERNAL_BINGO_URL}?GameID=${game_id}&CardID=Auto&GenerateCardID=${fCard.cardId}`}
                     key={fCard.cardId}
-                    className="card-div m-2"
-                    aria-label={`Card ${fCard.cardId}`}
                 >
-                    <div className="text-xs">Card {fCard.cardId}</div>
-                    <div className="grid grid-cols-5 w-[75px] m-auto border-r border-b border-white">
-                        {fCard.playedPositions.map((played, i) => {
-                            return (
-                                <div
-                                    key={i}
-                                    className={`w-[15px] h-[15px] border-t border-l border-solid border-white ${
-                                        played ? "played" : "unplayed"
-                                    }`}
-                                ></div>
-                            );
-                        })}
+                    <div
+                        key={fCard.cardId}
+                        className="card-div m-2"
+                        aria-label={`Card ${fCard.cardId}`}
+                    >
+                        <div className="text-xs">Card {fCard.cardId}</div>
+                        <div className="grid grid-cols-5 w-[75px] m-auto border-r border-b border-white">
+                            {fCard.playedPositions.map((played, i) => {
+                                return (
+                                    <div
+                                        key={i}
+                                        className={`w-[15px] h-[15px] border-t border-l border-solid border-white ${
+                                            played ? "played" : "unplayed"
+                                        }`}
+                                    ></div>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
+                </Link>
             );
         });
     }
