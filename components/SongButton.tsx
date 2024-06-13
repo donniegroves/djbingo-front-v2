@@ -11,9 +11,11 @@ function SongButton({
 }): JSX.Element {
     const [played, setPlayed] = useState<boolean>(song.played);
     const [buttonError, setButtonError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     async function handleSongClick() {
         try {
+            setIsLoading(true);
             const fetchResponse = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/toggle/${song.id}/${
                     song.played ? 0 : 1
@@ -34,9 +36,28 @@ function SongButton({
                     return prevSong;
                 });
             });
+            setIsLoading(false);
         } catch (error) {
+            setIsLoading(false);
             setButtonError("Problem with toggling played status.");
         }
+    }
+
+    if (isLoading) {
+        return (
+            <div
+                role="button"
+                className={`flex flex-col border border-gray-300 w-[350px] p-2 m-2${
+                    played ? " played" : ""
+                }`}
+            >
+                <div
+                    role="img"
+                    aria-label="Loading Spinner"
+                    className="spinner m-auto"
+                ></div>
+            </div>
+        );
     }
 
     return (
