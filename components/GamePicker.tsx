@@ -29,24 +29,33 @@ export default function GamePicker() {
     };
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center text-center p-24">
-            <form className="flex flex-col gap-y-2" onSubmit={handleSubmit}>
-                <h1 className="text-xl">Welcome to BB!</h1>
-                <p>Input a game number to get started.</p>
-                <label htmlFor="game_id">
-                    Game #:
+        <main className="p-3 flex items-center justify-center min-h-screen">
+            <form
+                className="flex flex-col gap-y-2 text-center"
+                onSubmit={handleSubmit}
+            >
+                <h1 className="text-2xl mb-8">Welcome to BingoBeater!</h1>
+                <label htmlFor="game_id" className="text-lg">
+                    Input a game number:
+                </label>
+                <div className="flex flex-row m-auto h-[32px] text-lg">
                     <input
                         type="text"
                         id="game_id"
                         name="game_id"
-                        className="max-w-20 text-center"
+                        className="max-w-20 text-center mr-3 h-full rounded"
                         value={gameIdInputValue}
                         onChange={handleInputChange}
                     />
-                </label>
-                <button onClick={handleSubmit} type="submit">
-                    Get Started
-                </button>
+                    <div
+                        className="flex flex-row cursor-pointer justify-center items-center h-full px-4 bg-blue-500 hover:bg-blue-700 rounded"
+                        onClick={handleSubmit}
+                        role="button"
+                    >
+                        Go
+                    </div>
+                </div>
+
                 {error && <p>{error}</p>}
             </form>
         </main>
