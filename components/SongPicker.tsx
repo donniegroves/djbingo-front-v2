@@ -16,8 +16,8 @@ function SongPicker({
 
     return (
         <div>
-            <p>
-                Played songs: {getPlayedSongsCount()}/{songs.length}
+            <p className="text-lg">
+                Played songs: {getPlayedSongsCount()} / {songs.length}
             </p>
             <div className="flex flex-col items-center">
                 {songs.map((song, i) => {
