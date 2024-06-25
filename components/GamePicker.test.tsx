@@ -20,21 +20,16 @@ function setup() {
 }
 
 describe("GamePicker", () => {
-    it("renders the expected heading, paragraph, input, and button", () => {
+    it("renders the expected heading, label, input, and button", () => {
         setup();
 
         const heading = screen.getByRole("heading", { level: 1 });
-        expect(heading).toHaveTextContent("Welcome to BB!");
+        expect(heading).toHaveTextContent("Welcome to BingoBeater!");
 
-        const paragraph = screen.getByRole("paragraph");
-        expect(paragraph).toHaveTextContent(
-            "Input a game number to get started."
-        );
-
-        const input = screen.getByLabelText("Game #:");
+        const input = screen.getByLabelText("Input a game number:");
         expect(input).toBeInTheDocument();
 
-        const button = screen.getByRole("button", { name: "Get Started" });
+        const button = screen.getByRole("button", { name: "Go" });
         expect(button).toBeInTheDocument();
 
         const error1 = screen.queryByText("Please enter a game number.");
@@ -47,7 +42,7 @@ describe("GamePicker", () => {
     it("renders an error message if the input is empty", () => {
         setup();
 
-        const button = screen.getByRole("button", { name: "Get Started" });
+        const button = screen.getByRole("button", { name: "Go" });
 
         fireEvent.click(button);
 
@@ -58,8 +53,8 @@ describe("GamePicker", () => {
     it("renders an error message if the input is not a number", () => {
         setup();
 
-        const input = screen.getByLabelText("Game #:");
-        const button = screen.getByRole("button", { name: "Get Started" });
+        const input = screen.getByLabelText("Input a game number:");
+        const button = screen.getByRole("button", { name: "Go" });
 
         fireEvent.change(input, { target: { value: "abc" } });
         fireEvent.click(button);
@@ -70,8 +65,8 @@ describe("GamePicker", () => {
 
     it("when a number is input, the user is pushed to the correct URL", async () => {
         setup();
-        const input = screen.getByLabelText("Game #:");
-        const button = screen.getByRole("button", { name: "Get Started" });
+        const input = screen.getByLabelText("Input a game number:");
+        const button = screen.getByRole("button", { name: "Go" });
 
         fireEvent.change(input, { target: { value: "555" } });
         fireEvent.click(button);

@@ -47,7 +47,7 @@ function CardViewer({
                         className="card-div m-2"
                         aria-label={`Card ${fCard.cardId}`}
                     >
-                        <div className="text-xs">Card {fCard.cardId}</div>
+                        <div className="text-base">Card {fCard.cardId}</div>
                         <div className="grid grid-cols-5 w-[75px] m-auto border-r border-b border-white">
                             {fCard.playedPositions.map((played, i) => {
                                 return (
@@ -71,7 +71,7 @@ function CardViewer({
 
     return (
         <div>
-            <p>Number of cards: {finalCards.length}</p>
+            <p className="text-lg">Number of cards: {finalCards.length}</p>
             <div className="flex flex-row flex-wrap justify-center winners">
                 {winningCardGrids}
             </div>

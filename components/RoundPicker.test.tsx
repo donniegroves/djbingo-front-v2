@@ -34,7 +34,7 @@ describe("RoundPicker", () => {
         render(<RoundPicker />);
 
         const heading = screen.getByRole("heading", { level: 1 });
-        expect(heading).toHaveTextContent("Available rounds for game 555:");
+        expect(heading).toHaveTextContent("Available rounds for Game 555:");
 
         const errMsg = screen.queryByText("No rounds found.");
         expect(errMsg).toBeInTheDocument();

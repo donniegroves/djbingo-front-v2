@@ -30,22 +30,28 @@ function RoundPicker() {
     }
 
     return (
-        <main className="flex flex-col text-center p-4">
-            <h1>Available rounds for game {game_id}:</h1>
-            {error && <p>{error}</p>}
-            {rounds.length == 0 && <p>No rounds found.</p>}
-            {rounds.length > 0 &&
-                rounds.map((round) => {
-                    return (
-                        <div
-                            role="button"
-                            key={round.id}
-                            onClick={() => handleRoundClick(round.id)}
-                        >
-                            {round.round_name}
-                        </div>
-                    );
-                })}
+        <main className="p-3 flex items-center justify-center min-h-screen">
+            <div className="flex flex-col gap-y-1 text-center">
+                <h1 className="text-lg">
+                    Available rounds for Game {game_id}:
+                </h1>
+                <hr className="mb-4" />
+                {error && <p>{error}</p>}
+                {rounds.length == 0 && <p>No rounds found.</p>}
+                {rounds.length > 0 &&
+                    rounds.map((round) => {
+                        return (
+                            <div
+                                className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white p-2 mb-2 rounded"
+                                role="button"
+                                key={round.id}
+                                onClick={() => handleRoundClick(round.id)}
+                            >
+                                {round.round_name}
+                            </div>
+                        );
+                    })}
+            </div>
         </main>
     );
 }
